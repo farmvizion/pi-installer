@@ -1,48 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <title>FarmVizion SDK Installer</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #output {
-      margin-top: 15px;
-      background: #f7f7f7;
-      border: 1px solid #ccc;
-      padding: 10px;
-      height: 300px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      font-family: monospace;
-    }
-  </style>
+  <title>FarmVizion Installer</title>
 </head>
 <body>
-  <h1>FarmVizion SDK Installer</h1>
-  <button id="installBtn">Install FarmVizion SDK</button>
+  <h2>FarmVizion SDK Installer</h2>
+  <button id="install-btn">Install SDK</button>
   <pre id="output"></pre>
 
   <script>
-    const btn = document.getElementById('installBtn');
+    const btn = document.getElementById('install-btn');
     const output = document.getElementById('output');
 
     btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      output.textContent = 'Starting installation...\n';
-
-      try {
-        const result = await window.farmvizionAPI.runInstall();
-        output.textContent += '\n✅ Installation completed successfully!\n' + result;
-      } catch (err) {
-        output.textContent += '\n❌ Installation failed:\n' + err.message;
-      }
-
-      btn.disabled = false;
+      output.textContent = 'Installing... Please wait.';
+      const result = await window.api.installSDK();
+      output.textContent = result;
     });
   </script>
 </body>

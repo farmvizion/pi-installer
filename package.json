@@ -1,12 +1,21 @@
 {
-  "name": "farmvizion-installer",
+  "name": "pi-installer",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-        "start": "electron ."  },
+  "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/farmvizion/pi-installer.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/farmvizion/pi-installer/issues"
+  },
+  "homepage": "https://github.com/farmvizion/pi-installer#readme",
   "description": "",
   "dependencies": {
     "electron": "^37.2.0"

@@ -1,44 +1,35 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const { exec } = require('child_process');
 const path = require('path');
-const { spawn } = require('child_process');
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 400,
+    height: 250,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
   win.loadFile('index.html');
 }
 
-// Stream stdout and stderr to renderer
-ipcMain.handle('run-install-script', async (event) => {
-  return new Promise((resolve, reject) => {
-    const script = spawn('bash', ['install-farmvizion-git.sh'], {
-      cwd: __dirname,
-    });
+app.whenReady().then(createWindow);
 
-    script.stdout.on('data', (data) => {
-      event.sender.send('install-output', data.toString());
-    });
-
-    script.stderr.on('data', (data) => {
-      event.sender.send('install-output', `ERROR: ${data.toString()}`);
-    });
-
-    script.on('close', (code) => {
-      if (code === 0) {
-        resolve('Installation completed.');
-      } else {
-        reject(new Error(`Script exited with code ${code}`));
+ipcMain.handle('install-sdk', async () => {
+  return new Promise((resolve) => {
+    exec('bash ~/pi-installer/install-farmvizion-git.sh', (error, stdout, stderr) => {
+      if (error) {
+        resolve(`Error: ${error.message}`);
+        return;
       }
-    });
-
-    script.on('error', (err) => {
-      reject(err);
+      if (stderr) {
+        resolve(`Stderr: ${stderr}`);
+        return;
+      }
+      resolve(`Success:\n${stdout}`);
     });
   });
 });
