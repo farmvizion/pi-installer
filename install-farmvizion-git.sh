@@ -34,16 +34,16 @@ else
     git clone --depth 1 "$GIT_REPO" "$SDK_DIR"
 fi
 
-find "$SDK_DIR" -path "$SDK_DIR/fvapp/__pycache__" -prune -o -path "$SDK_DIR/fvapp/detected" -prune -o -exec chmod u+rwX {} +
+chmod -R u+rwX "$SDK_DIR"
 
 
 # --- Step 3: Make repo read-only ---
-cd "$SDK_DIR"
-git remote set-url --push origin DISABLE
-git config --local advice.detachedHead false
-find "$SDK_DIR" -path "$SDK_DIR/fvapp/__pycache__" -prune -o -path "$SDK_DIR/fvapp/detected" -prune -o -exec chmod a-w {} +
+#cd "$SDK_DIR"
+#git remote set-url --push origin DISABLE
+#git config --local advice.detachedHead false
+#chmod -R a-w "$SDK_DIR"
 
-echo "✅ SDK is ready and read-only at $SDK_DIR"
+#echo "✅ SDK is ready and read-only at $SDK_DIR"
 
 # --- Step 4: System package updates ---
 echo "🔄 Updating system packages..."
@@ -92,8 +92,8 @@ npm install
 # --- Step 10: Systemd services setup ---
 echo "🧰 Installing systemd services..."
 sudo cp "$SDK_DIR/system-services/farmvizion-backend.service" /etc/systemd/system/
-sudo cp "$SDK_DIR/system-services/farmvizion-detection.service" /etc/systemd/system/
 sudo cp "$SDK_DIR/system-services/farmvizion-frontend.service" /etc/systemd/system/
+sudo cp "$SDK_DIR/system-services/farmvizion-detection.service" /etc/systemd/system/
 #sudo cp "$SDK_DIR/system-services/farmvizion-update.service" /etc/systemd/system/
 
 
@@ -102,7 +102,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now farmvizion-backend.service
 sudo systemctl enable --now farmvizion-detection.service
 sudo systemctl enable --now farmvizion-frontend.service
-
 #sudo systemctl enable --now farmvizion-update.service
 
 echo "✅ All done! FarmVizion SDK is installed and services are running."
