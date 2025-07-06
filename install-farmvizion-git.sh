@@ -88,7 +88,6 @@ npm install
 
 cd "$SDK_DIR/farmvizion-frontend"
 npm install
-npm run build
 
 # --- Step 10: Systemd services setup ---
 echo "🧰 Installing systemd services..."
