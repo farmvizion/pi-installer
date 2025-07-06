@@ -104,4 +104,8 @@ sudo systemctl enable --now farmvizion-detection.service
 sudo systemctl enable --now farmvizion-frontend.service
 #sudo systemctl enable --now farmvizion-update.service
 
+sudo systemctl restart farmvizion-backend.service
+sudo systemctl restart farmvizion-detection.service
+sudo systemctl restart farmvizion-frontend.service
+
 echo "✅ All done! FarmVizion SDK is installed and services are running."
